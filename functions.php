@@ -49,8 +49,8 @@
 	
 	======================================================================================================================== */
 
-	add_action( 'wp_enqueue_scripts', 'bootstrap_script_init' );
-	add_action( 'wp_enqueue_scripts', 'custom_script_init' );
+	add_action( 'wp_enqueue_scripts', 'tq_theme_prefix_bootstrap_script_init' );
+	add_action( 'wp_enqueue_scripts', 'tq_theme_prefix_custom_script_init' );
 
 	add_filter( 'body_class', array( 'TQ', 'add_slug_to_body_class' ) );
 
@@ -77,24 +77,28 @@
 	 * @author Keir Whitaker
 	 */
 
-	function bootstrap_script_init() {
-		
-		wp_register_script('bootstrap', get_template_directory_uri(). '/bootstrap/js/bootstrap.min.js', array( 'jquery' ), '3.3.7', true);
-		wp_enqueue_script('bootstrap');
+	if (! function_exists(tq_theme_prefix_bootstrap_script_init) ){
+		function tq_theme_prefix_bootstrap_script_init() {
+			
+			wp_register_script('bootstrap', get_template_directory_uri(). '/bootstrap/js/bootstrap.min.js', array( 'jquery' ), '3.3.7', true);
+			wp_enqueue_script('bootstrap');
 
-		wp_register_style( 'bootstrap', get_stylesheet_directory_uri().'/bootstrap/css/bootstrap.min.css', '', '3.3.7', 'all' );
-		wp_enqueue_style( 'bootstrap' );
+			wp_register_style( 'bootstrap', get_stylesheet_directory_uri().'/bootstrap/css/bootstrap.min.css', '', '3.3.7', 'all' );
+			wp_enqueue_style( 'bootstrap' );
 
+		}
 	}
-	
-	function custom_script_init(){
 
-		wp_register_script( 'scripts', get_template_directory_uri().'/dist/scripts.min.js', array( 'jquery' ), '0.0.1', true );
-		wp_enqueue_script( 'scripts' );
+	if (! function_exists(tq_theme_prefix_custom_script_init) ){	
+		function tq_theme_prefix_custom_script_init(){
 
-		wp_register_style( 'style', get_stylesheet_directory_uri().'/dist/style.min.css', '', array(), 'style' );
-		wp_enqueue_style( 'style' );
+			wp_register_script( 'scripts', get_template_directory_uri().'/dist/scripts.min.js', array( 'jquery' ), '0.0.1', true );
+			wp_enqueue_script( 'scripts' );
 
+			wp_register_style( 'style', get_stylesheet_directory_uri().'/dist/style.min.css', '', array(), 'style' );
+			wp_enqueue_style( 'style' );
+
+		}
 	}
 	/* ========================================================================================================================
 	
@@ -103,44 +107,52 @@
 	======================================================================================================================== */
 	
 	//remove wp version
-	function theme_remove_version() {
-	return '';
+	if (! function_exists(tq_theme_prefix_theme_remove_version) ){
+		function tq_theme_prefix_theme_remove_version() {
+			return '';
+		}
 	}
-	
-	add_filter('the_generator', 'theme_remove_version');
+
+	add_filter('the_generator', 'tq_theme_prefix_theme_remove_version');
 	
 	//remove default footer text
-	function remove_footer_admin () {
-		echo "";
+	if (! function_exists(tq_theme_prefix_remove_footer_admine) ){
+		function tq_theme_prefix_remove_footer_admin () {
+			echo "";
+		}
 	}
 	 
-	add_filter('admin_footer_text', 'remove_footer_admin');
+	add_filter('admin_footer_text', 'tq_theme_prefix_remove_footer_admin');
 	
 	//remove wordpress logo from adminbar
-	function wp_logo_admin_bar_remove() {
-		global $wp_admin_bar;
+	if (! function_exists(tq_theme_prefix_wp_logo_admin_bar_remove) ){
+		function tq_theme_prefix_wp_logo_admin_bar_remove() {
+			global $wp_admin_bar;
 
-		/* Remove their stuff */
-		$wp_admin_bar->remove_menu('wp-logo');
+			/* Remove their stuff */
+			$wp_admin_bar->remove_menu('wp-logo');
+		}
 	}
 	
-	add_action('wp_before_admin_bar_render', 'wp_logo_admin_bar_remove', 0);
+	add_action('wp_before_admin_bar_render', 'tq_theme_prefix_wp_logo_admin_bar_remove', 0);
 	
 	// Remove default Dashboard widgets
-	function disable_default_dashboard_widgets() {
-	
-		//remove_meta_box('dashboard_right_now', 'dashboard', 'core');
-		remove_meta_box('dashboard_activity', 'dashboard', 'core');
-		remove_meta_box('dashboard_recent_comments', 'dashboard', 'core');
-		remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');
-		remove_meta_box('dashboard_plugins', 'dashboard', 'core');
-	
-		remove_meta_box('dashboard_quick_press', 'dashboard', 'core');
-		remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');
-		remove_meta_box('dashboard_primary', 'dashboard', 'core');
-		remove_meta_box('dashboard_secondary', 'dashboard', 'core');
+	if (! function_exists(tq_theme_prefix_disable_default_dashboard_widgets) ){
+		function tq_theme_prefix_disable_default_dashboard_widgets() {
+		
+			//remove_meta_box('dashboard_right_now', 'dashboard', 'core');
+			remove_meta_box('dashboard_activity', 'dashboard', 'core');
+			remove_meta_box('dashboard_recent_comments', 'dashboard', 'core');
+			remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');
+			remove_meta_box('dashboard_plugins', 'dashboard', 'core');
+		
+			remove_meta_box('dashboard_quick_press', 'dashboard', 'core');
+			remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');
+			remove_meta_box('dashboard_primary', 'dashboard', 'core');
+			remove_meta_box('dashboard_secondary', 'dashboard', 'core');
+		}
 	}
-	add_action('admin_menu', 'disable_default_dashboard_widgets');
+	add_action('admin_menu', 'tq_theme_prefix_disable_default_dashboard_widgets');
 	
 	remove_action('welcome_panel', 'wp_welcome_panel');
 	
@@ -151,20 +163,35 @@
 	======================================================================================================================== */
 	
 	// Add custom css
-	function my_custom_login() {
-		echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('stylesheet_directory') . '/custom-login-style.css" />';
+	if (! function_exists(tq_theme_prefix_my_custom_login) ){
+		function tq_theme_prefix_my_custom_login() {
+			echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('stylesheet_directory') . '/custom-login-style.css" />';
+		}
 	}
-	add_action('login_head', 'my_custom_login');
-	
+	add_action('login_head', 'tq_theme_prefix_my_custom_login');
+		
 	// Link the logo to the home of our website
-	function my_login_logo_url() {
-		return get_bloginfo( 'url' );
+	if (! function_exists(tq_theme_prefix_my_login_logo_url) ){
+		function tq_theme_prefix_my_login_logo_url() {
+			return get_bloginfo( 'url' );
+		}
 	}
-	add_filter( 'login_headerurl', 'my_login_logo_url' );
+	add_filter( 'login_headerurl', 'tq_theme_prefix_my_login_logo_url' );
+		
+	// Change the title text
+	if(! function_exists(tq_theme_prefix_my_login_logo_url_title))
+		function tq_theme_prefix_my_login_logo_url_title() {
+			return 'Torque Theme';
+		}
+	}
+	add_filter( 'login_headertitle', 'tq_theme_prefix_my_login_logo_url_title' );
+
+	/* ========================================================================================================================
 	
-	// Change the title text 
-	function my_login_logo_url_title() {
-		return 'Torque Theme';
-	}
-	add_filter( 'login_headertitle', 'my_login_logo_url_title' );
+	TGM PLUGIN ACTIVATION
+	
+	======================================================================================================================== */
+
+	include 'classes/tgm-plugin-activation.php';?>
+
 	

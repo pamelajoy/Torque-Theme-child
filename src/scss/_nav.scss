@@ -1,0 +1,29 @@
+.navbar-nav{
+	margin: 0;
+}
+.custom-logo-link{
+	width: 6.875rem;
+}
+.flex-2{
+	flex: auto;
+	@media (min-width: 992px) {
+		flex: 2;
+	}
+}
+.flex-1{
+	flex: auto;
+	@media (min-width: 992px) {
+		flex: 1;
+	}
+}
+.flex-0{
+	flex-basis: 100%;
+	flex-grow: 1;
+	
+	@media (min-width: 992px) {
+		flex: 0;
+	}
+}
+.social-link, .navbar-expand-lg .navbar-nav .nav-link{
+	padding: .5rem 0;
+}

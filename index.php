@@ -1,34 +1,56 @@
 <?php
 /**
  * The main template file
+ *
  * This is the most generic template file in a WordPress theme
  * and one of the two required files for a theme (the other being style.css).
  * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file 
+ * E.g., it puts together the home page when no home.php file exists.
  *
- * Please see /external/torque-utilities.php for info on TQ::get_template_parts()
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package 		WordPress
- * @subpackage 	Torque Theme
- * @author 			Torque
+ * @package Torque
  */
-?>
-<?php TQ::get_template_parts( array( 'parts/shared/html-header', 'parts/shared/header' ) ); ?>
 
-<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
-	
-	<div class="content">
+get_header(); ?>
 
-		<?php the_content(); ?>
-		
-	</div>
-	
-<?php endwhile; ?>
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main">
 
-<?php else: ?>
-	<h1>
-		<?php echo __('Nothing to show yet.', 'wp_torque')?>
-	</h1>
-<?php endif; ?>
+		<?php
+		if ( have_posts() ) :
 
-<?php TQ::get_template_parts( array( 'parts/shared/footer','parts/shared/html-footer') ); ?>
+			if ( is_home() && ! is_front_page() ) : ?>
+				<header>
+					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
+				</header>
+
+			<?php
+			endif;
+
+			/* Start the Loop */
+			while ( have_posts() ) : the_post();
+
+				/*
+				 * Include the Post-Format-specific template for the content.
+				 * If you want to override this in a child theme, then include a file
+				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
+				 */
+				get_template_part( 'template-parts/content', get_post_format() );
+
+			endwhile;
+
+			the_posts_navigation();
+
+		else :
+
+			get_template_part( 'template-parts/content', 'none' );
+
+		endif; ?>
+
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+<?php
+get_sidebar();
+get_footer();

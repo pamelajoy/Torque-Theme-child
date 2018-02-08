@@ -1,6 +1,6 @@
 <?php
 
-if ( ! function_exists(tq_theme_prefix_create_post_type) ) :
+if ( ! function_exists('tq_theme_prefix_create_post_type') ) :
   function tq_theme_prefix_create_post_type() {
 
     // Custom Post Type - Testimonials
